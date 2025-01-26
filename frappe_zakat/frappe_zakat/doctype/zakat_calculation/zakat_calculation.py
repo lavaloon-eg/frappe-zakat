@@ -39,6 +39,8 @@ class ZAKATCalculation(Document):
 
 	@staticmethod
 	def get_html_table_view(amounts_dict: dict) -> str:
+		total_amount_eligible_for_zakat = 0
+		total_zakat_amount = 0
 		table = (f"""
 			<table>
 			<tr>
@@ -48,18 +50,25 @@ class ZAKATCalculation(Document):
 			</tr>
 			""")
 		for key, value in amounts_dict.items():
-			type = " ".join([w.capitalize() for w in key.split("_")])
+			zakat_type = " ".join([w.capitalize() for w in key.split("_")])
 			amount = frappe.format(value['amount'], {'fieldtype': 'Currency'})
 			zakat_amount = frappe.format(value['zakat_amount'], {'fieldtype': 'Currency'}) 
 			if value['zakat_amount']:
-					table += f"""
+				total_amount_eligible_for_zakat += value['amount']
+				total_zakat_amount += value['zakat_amount']
+				table += f"""
 					<tr>
-					<td>{type}</td>
+					<td>{zakat_type}</td>
 					<td>{amount}</td>
 					<td>{zakat_amount}</td>
 					</tr>
 					"""
-		table += """
+		table += f"""
+			<tr>
+			<th>Total</th>
+			<th>{frappe.format(total_amount_eligible_for_zakat, {'fieldtype': 'Currency'})}</th>
+			<th>{frappe.format(total_zakat_amount, {'fieldtype': 'Currency'})}</th>
+			</tr>
 			</table>
 			"""
 		return table
