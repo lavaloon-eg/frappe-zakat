@@ -16,11 +16,11 @@
   "current_silver_price_for_1_gm",
   "total_zakat_amount_section",
   "total_zakat_amount_for_each_entered_type",
-  "tab_break_wjyw",
+  "cash_and_bank_balances_tab",
   "cash_and_bank_balances_details_section",
   "total_cash_amount",
   "column_break_zadi",
-  "total_zakat_amount",
+  "total_cash_zakat_amount",
   "gold_and_silver_holdings_tab",
   "golds_section",
   "gold_holdings",
@@ -40,11 +40,6 @@
   "amount_eligible_for_zakat"
  ],
  "fields": [
-  {
-   "fieldname": "tab_break_wjyw",
-   "fieldtype": "Tab Break",
-   "label": "Cash and Bank Balances"
-  },
   {
    "fieldname": "main_terms_and_total_tab",
    "fieldtype": "Tab Break",
@@ -94,13 +89,6 @@
    "non_negative": 1
   },
   {
-   "fieldname": "total_zakat_amount",
-   "fieldtype": "Currency",
-   "label": "Total Zakat Amount",
-   "non_negative": 1,
-   "read_only": 1
-  },
-  {
    "fieldname": "gold_and_silver_holdings_tab",
    "fieldtype": "Tab Break",
    "label": "Gold and Silver Holdings"
@@ -136,8 +124,9 @@
   },
   {
    "fieldname": "total_zakat_amount_for_each_entered_type",
-   "fieldtype": "HTML",
-   "label": "Total Zakat Amount for Each Entered Type"
+   "fieldtype": "Text Editor",
+   "label": "Total Zakat Amount for Each Entered Type",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_zadi",
@@ -245,11 +234,23 @@
    "fieldtype": "Table",
    "label": "Gold Holdings",
    "options": "Zakat Gold Item"
+  },
+  {
+   "fieldname": "total_cash_zakat_amount",
+   "fieldtype": "Currency",
+   "label": "Total Cash Zakat Amount",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "cash_and_bank_balances_tab",
+   "fieldtype": "Tab Break",
+   "label": "Cash and Bank Balances"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-26 15:59:47.214222",
+ "modified": "2025-01-26 18:06:34.049259",
  "modified_by": "Administrator",
  "module": "Frappe Zakat",
  "name": "ZAKAT Calculation",

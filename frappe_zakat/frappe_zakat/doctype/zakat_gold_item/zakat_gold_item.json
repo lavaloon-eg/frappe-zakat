@@ -8,8 +8,9 @@
  "field_order": [
   "gold_karat",
   "equivalent_value_to_24k",
-  "column_break_qqxk",
   "grams",
+  "column_break_qqxk",
+  "gold_amount",
   "zakat_amount"
  ],
  "fields": [
@@ -27,8 +28,7 @@
    "in_list_view": 1,
    "label": "Equivalent Value to 24K",
    "non_negative": 1,
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "column_break_qqxk",
@@ -46,16 +46,23 @@
    "fieldname": "zakat_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "ZAKAT Amount",
+   "label": "Zakat Amount",
    "non_negative": 1,
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
+  },
+  {
+   "fieldname": "gold_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Gold Amount",
+   "non_negative": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-01-26 14:53:05.716396",
+ "modified": "2025-01-26 18:09:12.095080",
  "modified_by": "Administrator",
  "module": "Frappe Zakat",
  "name": "Zakat Gold Item",

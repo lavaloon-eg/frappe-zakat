@@ -15,6 +15,7 @@ class ZakatGoldItem(Document):
 		from frappe.types import DF
 
 		equivalent_value_to_24k: DF.Float
+		gold_amount: DF.Currency
 		gold_karat: DF.Literal["24", "22", "21", "20", "18", "14", "12", "10"]
 		grams: DF.Float
 		parent: DF.Data
