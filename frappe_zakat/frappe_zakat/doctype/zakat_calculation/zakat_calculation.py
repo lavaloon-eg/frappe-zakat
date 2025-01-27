@@ -1,9 +1,29 @@
 # Copyright (c) 2025, amr ashraf and contributors
 # For license information, please see license.txt
 
+from dataclasses import dataclass
+from typing import List
 import frappe
 from frappe.model.document import Document
+from datetime import datetime
 
+@dataclass
+class ZakatType:
+	name: str
+	amount: float
+	zakat_amount: float
+
+	def to_html_row(self) -> str:
+		"""Generate an HTML table row for this ZakatType."""
+		formatted_amount = frappe.format(self.amount, {'fieldtype': 'Currency'})
+		formatted_zakat_amount = frappe.format(self.zakat_amount, {'fieldtype': 'Currency'})
+		return f"""
+			<tr>
+				<td>{self.name}</td>
+				<td>{formatted_amount}</td>
+				<td>{formatted_zakat_amount}</td>
+			</tr>
+		"""
 
 class ZAKATCalculation(Document):
 	# begin: auto-generated types
@@ -29,6 +49,7 @@ class ZAKATCalculation(Document):
 		start_fiscal_year: DF.Date
 		total_cash_amount: DF.Currency
 		total_cash_zakat_amount: DF.Currency
+		total_gold_amount: DF.Currency
 		total_gold_zakat_amount: DF.Currency
 		total_silver_amount: DF.Currency
 		total_silver_grams: DF.Float
@@ -38,39 +59,30 @@ class ZAKATCalculation(Document):
 	pass
 
 	@staticmethod
-	def get_html_table_view(amounts_dict: dict) -> str:
+	def get_html_table_view(zakat_types: List[ZakatType]) -> str:
 		total_amount_eligible_for_zakat = 0
 		total_zakat_amount = 0
-		table = (f"""
+		table = """
 			<table>
-			<tr>
-			<th>Zakat Type</th>
-			<th>Amount Eligible for Zakat</th>
-			<th>Zakat Amount</th>
-			</tr>
-			""")
-		for key, value in amounts_dict.items():
-			zakat_type = " ".join([w.capitalize() for w in key.split("_")])
-			amount = frappe.format(value['amount'], {'fieldtype': 'Currency'})
-			zakat_amount = frappe.format(value['zakat_amount'], {'fieldtype': 'Currency'}) 
-			if value['zakat_amount']:
-				total_amount_eligible_for_zakat += value['amount']
-				total_zakat_amount += value['zakat_amount']
-				table += f"""
-					<tr>
-					<td>{zakat_type}</td>
-					<td>{amount}</td>
-					<td>{zakat_amount}</td>
-					</tr>
-					"""
+				<tr>
+					<th>Zakat Type</th>
+					<th>Amount Eligible for Zakat</th>
+					<th>Zakat Amount</th>
+				</tr>
+		"""
+		for zakat_type in zakat_types:
+			total_amount_eligible_for_zakat += zakat_type.amount
+			total_zakat_amount += zakat_type.zakat_amount
+			table += zakat_type.to_html_row()
+
 		table += f"""
 			<tr>
-			<th>Total</th>
-			<th>{frappe.format(total_amount_eligible_for_zakat, {'fieldtype': 'Currency'})}</th>
-			<th>{frappe.format(total_zakat_amount, {'fieldtype': 'Currency'})}</th>
+				<th>Total</th>
+				<th>{frappe.format(total_amount_eligible_for_zakat, {'fieldtype': 'Currency'})}</th>
+				<th>{frappe.format(total_zakat_amount, {'fieldtype': 'Currency'})}</th>
 			</tr>
 			</table>
-			"""
+		"""
 		return table
 
 	def validate(self):
@@ -85,7 +97,13 @@ class ZAKATCalculation(Document):
 		self.generate_total_zakat_amount_table()
 
 	def validate_fiscal_year(self):
-		if self.start_fiscal_year >= self.end_fiscal_year:
+		try:
+			start_date = datetime.strptime(self.start_fiscal_year, "%Y-%m-%d").date()
+			end_date = datetime.strptime(self.end_fiscal_year, "%Y-%m-%d").date()
+		except ValueError:
+			frappe.throw("Fiscal Year values must be valid dates.")
+
+		if start_date >= end_date:
 			frappe.throw("Start Fiscal Year should be less than End Fiscal Year.")
 
 	def set_nisab_threshold(self):
@@ -95,30 +113,33 @@ class ZAKATCalculation(Document):
 			frappe.throw("Current Gold Price is not set in Settings.")
 
 	def set_cash_and_bank_zakat_amounts(self):
-		if self.total_cash_amount > self.nisab_threshold:
+		if self.total_cash_amount >= self.nisab_threshold:
 			self.total_cash_zakat_amount = self.total_cash_amount * 0.025
 		else:
 			self.total_cash_zakat_amount = 0
 
 	def set_total_gold_zakat_amount(self):
 		total_gold_amount = 0
+		total_gold_zakat_amount = 0
 		for gold in self.gold_holdings:
 			if gold.grams:
 				gold.equivalent_value_to_24k = gold.grams * (
 					int(gold.gold_karat) / 24)
 				gold.gold_amount = gold.equivalent_value_to_24k * self.current_24k_gold_price_for_1_gm
-				if gold.gold_amount > self.nisab_threshold:
+				if gold.gold_amount >= self.nisab_threshold:
+					total_gold_amount += gold.gold_amount
 					gold.zakat_amount = gold.gold_amount * 0.025
-					total_gold_amount += gold.zakat_amount
+					total_gold_zakat_amount += gold.zakat_amount
 				else:
 					gold.zakat_amount = 0
 
-		self.total_gold_zakat_amount = total_gold_amount
+		self.total_gold_amount = total_gold_amount
+		self.total_gold_zakat_amount = total_gold_zakat_amount
 
 	def set_total_silver_zakat_amount(self):
 		if self.total_silver_grams:
 			self.total_silver_amount = self.total_silver_grams * self.current_silver_price_for_1_gm
-			if self.total_silver_amount > self.nisab_threshold:
+			if self.total_silver_amount >= self.nisab_threshold:
 				self.total_silver_zakat_amount = self.total_silver_amount * 0.025
 			else:
 				self.total_silver_zakat_amount = 0
@@ -133,29 +154,17 @@ class ZAKATCalculation(Document):
 		if self.amount_eligible_for_zakat < 0:
 			frappe.throw("Inventory Value, Receivables, and Liabilities cannot be negative.")
 
-		if self.amount_eligible_for_zakat > self.nisab_threshold:
+		if self.amount_eligible_for_zakat >= self.nisab_threshold:
 			self.business_assets_zakat_amount = self.amount_eligible_for_zakat * 0.025
 		else:
 			self.business_assets_zakat_amount = 0
 
 	def generate_total_zakat_amount_table(self):
-		amounts_dict = {
-			"cash": {
-				"amount": self.total_cash_amount,
-				"zakat_amount": self.total_cash_zakat_amount
-			},
-			"gold": {
-				"amount": self.total_gold_zakat_amount,
-				"zakat_amount": self.total_gold_zakat_amount
-			},
-			"silver": {
-				"amount": self.total_silver_amount,
-				"zakat_amount": self.total_silver_zakat_amount
-			},
-			"business_assets": {
-				"amount": self.amount_eligible_for_zakat,
-				"zakat_amount": self.business_assets_zakat_amount
-			}
-		}
+		zakat_types = [
+			ZakatType("Cash", self.total_cash_amount, self.total_cash_zakat_amount),
+			ZakatType("Gold", self.total_gold_amount, self.total_gold_zakat_amount),
+			ZakatType("Silver", self.total_silver_amount, self.total_silver_zakat_amount),
+			ZakatType("Business Assets", self.amount_eligible_for_zakat, self.business_assets_zakat_amount),
+		]
 
-		self.total_zakat_amount_for_each_entered_type = self.get_html_table_view(amounts_dict)
+		self.total_zakat_amount_for_each_entered_type = self.get_html_table_view(zakat_types)

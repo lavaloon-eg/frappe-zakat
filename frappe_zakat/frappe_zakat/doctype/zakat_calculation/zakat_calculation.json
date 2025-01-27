@@ -24,6 +24,7 @@
   "gold_and_silver_holdings_tab",
   "golds_section",
   "gold_holdings",
+  "total_gold_amount",
   "total_gold_zakat_amount",
   "silver_section",
   "total_silver_grams",
@@ -246,11 +247,18 @@
    "fieldname": "cash_and_bank_balances_tab",
    "fieldtype": "Tab Break",
    "label": "Cash and Bank Balances"
+  },
+  {
+   "fieldname": "total_gold_amount",
+   "fieldtype": "Currency",
+   "label": "Total Gold Amount",
+   "non_negative": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-26 18:06:34.049259",
+ "modified": "2025-01-27 12:38:37.855122",
  "modified_by": "Administrator",
  "module": "Frappe Zakat",
  "name": "ZAKAT Calculation",
