@@ -10,17 +10,17 @@ from datetime import datetime
 @dataclass
 class ZakatType:
 	name: str
-	amount: float
+	eligible_amount: float
 	zakat_amount: float
 
 	def to_html_row(self) -> str:
 		"""Generate an HTML table row for this ZakatType."""
-		formatted_amount = frappe.format(self.amount, {'fieldtype': 'Currency'})
+		formatted_eligible_amount = frappe.format(self.eligible_amount, {'fieldtype': 'Currency'})
 		formatted_zakat_amount = frappe.format(self.zakat_amount, {'fieldtype': 'Currency'})
 		return f"""
 			<tr>
 				<td>{self.name}</td>
-				<td>{formatted_amount}</td>
+				<td>{formatted_eligible_amount}</td>
 				<td>{formatted_zakat_amount}</td>
 			</tr>
 		"""
@@ -71,7 +71,7 @@ class ZAKATCalculation(Document):
 				</tr>
 		"""
 		for zakat_type in zakat_types:
-			total_amount_eligible_for_zakat += zakat_type.amount
+			total_amount_eligible_for_zakat += zakat_type.eligible_amount
 			total_zakat_amount += zakat_type.zakat_amount
 			table += zakat_type.to_html_row()
 
