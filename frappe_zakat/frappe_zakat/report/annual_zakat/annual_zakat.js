@@ -17,5 +17,17 @@ frappe.query_reports["Annual Zakat"] = {
 			"fieldtype": "Date",
 			"reqd": 0
 		}
-	]
+	],
+	"formatter": function (value, row, column, data, default_formatter) {
+		value = default_formatter(value, row, column, data);
+
+		if (column.fieldname === "company_name" && data && data.company_id) {
+			value = `<a href="/app/company/${data.company_id}" 
+				data-doctype="Company" 
+				data-name="${data.company_id}" 
+				data-value="${data.company_id}">${value}</a>`;
+		}
+
+		return value;
+	}
 };
