@@ -1,0 +1,74 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-01-26 14:49:10.755477",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "gold_karat",
+  "equivalent_value_to_24k",
+  "grams",
+  "column_break_qqxk",
+  "gold_amount",
+  "zakat_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "gold_karat",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Gold Karat",
+   "options": "24\n22\n21\n20\n18\n14\n12\n10",
+   "reqd": 1
+  },
+  {
+   "fieldname": "equivalent_value_to_24k",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Equivalent Value to 24K",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_qqxk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "grams",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Grams",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "zakat_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Zakat Amount",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "gold_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Gold Amount",
+   "non_negative": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-01-26 18:09:12.095080",
+ "modified_by": "Administrator",
+ "module": "Frappe Zakat",
+ "name": "Zakat Gold Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
