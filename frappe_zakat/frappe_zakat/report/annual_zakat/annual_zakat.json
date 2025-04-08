@@ -1,5 +1,6 @@
 {
  "add_total_row": 1,
+ "add_translate_data": 0,
  "columns": [],
  "creation": "2025-01-26 22:40:27.684529",
  "disabled": 0,
@@ -8,9 +9,9 @@
  "filters": [],
  "idx": 0,
  "is_standard": "Yes",
- "letter_head": "Naqaa",
+ "letter_head": "",
  "letterhead": null,
- "modified": "2025-01-26 22:40:27.684529",
+ "modified": "2025-04-08 17:34:40.654639",
  "modified_by": "Administrator",
  "module": "Frappe Zakat",
  "name": "Annual Zakat",
