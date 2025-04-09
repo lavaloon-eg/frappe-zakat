@@ -7,11 +7,18 @@ import frappe
 from frappe.model.document import Document
 from datetime import datetime
 
+
 @dataclass
 class ZakatType:
 	name: str
-	eligible_amount: float
-	zakat_amount: float
+	eligible_amount: float = 0.0
+	zakat_amount: float = 0.0
+
+	def __post_init__(self):
+		if self.eligible_amount is None:
+			self.eligible_amount = 0.0
+		if self.zakat_amount is None:
+			self.zakat_amount = 0.0
 
 	def to_html_row(self) -> str:
 		"""Generate an HTML table row for this ZakatType."""
@@ -88,7 +95,7 @@ class ZAKATCalculation(Document):
 	def validate(self):
 		self.validate_fiscal_year()
 
-	def on_update(self):
+	def before_save(self):
 		self.set_nisab_threshold()
 		self.set_cash_and_bank_zakat_amounts()
 		self.set_total_gold_zakat_amount()
@@ -113,19 +120,20 @@ class ZAKATCalculation(Document):
 			frappe.throw("Current Gold Price is not set in Settings.")
 
 	def set_cash_and_bank_zakat_amounts(self):
-		if self.total_cash_amount >= self.nisab_threshold:
+		self.total_cash_zakat_amount = 0
+
+		if self.total_cash_amount and self.total_cash_amount >= self.nisab_threshold:
 			self.total_cash_zakat_amount = self.total_cash_amount * 0.025
-		else:
-			self.total_cash_zakat_amount = 0
 
 	def set_total_gold_zakat_amount(self):
 		total_gold_amount = 0
 		total_gold_zakat_amount = 0
+
 		for gold in self.gold_holdings:
 			if gold.grams:
-				gold.equivalent_value_to_24k = gold.grams * (
-					int(gold.gold_karat) / 24)
+				gold.equivalent_value_to_24k = gold.grams * (int(gold.gold_karat) / 24)
 				gold.gold_amount = gold.equivalent_value_to_24k * self.current_24k_gold_price_for_1_gm
+
 				if gold.gold_amount >= self.nisab_threshold:
 					total_gold_amount += gold.gold_amount
 					gold.zakat_amount = gold.gold_amount * 0.025
@@ -145,6 +153,10 @@ class ZAKATCalculation(Document):
 				self.total_silver_zakat_amount = 0
 
 	def set_total_business_assets_zakat_amount(self):
+		self.inventory_value = self.validate_amount(self.inventory_value)
+		self.receivables = self.validate_amount(self.receivables)
+		self.liabilities = self.validate_amount(self.liabilities)
+
 		self.amount_eligible_for_zakat = (
 			self.inventory_value
 			+ self.receivables
@@ -168,3 +180,7 @@ class ZAKATCalculation(Document):
 		]
 
 		self.total_zakat_amount_for_each_entered_type = self.get_html_table_view(zakat_types)
+
+	def validate_amount(self, amount):
+		"""Helper method to validate that an amount is a valid number."""
+		return float(0) if not isinstance(amount, (int, float)) else amount

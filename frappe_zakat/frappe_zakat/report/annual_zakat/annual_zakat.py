@@ -4,6 +4,7 @@
 import frappe
 from frappe.query_builder import DocType
 from frappe import _
+from pypika.terms import Case
 
 
 def execute(filters: dict = None) -> tuple:
@@ -17,12 +18,32 @@ def execute(filters: dict = None) -> tuple:
 def get_data(filters: dict) -> list:
 	zakat_calculation = DocType("ZAKAT Calculation")
 	company = DocType("Company")
-	total_amount_eligible_for_zakat = (
-		zakat_calculation.total_cash_amount
-		+ zakat_calculation.total_gold_zakat_amount
-		+ zakat_calculation.total_silver_amount
-		+ zakat_calculation.amount_eligible_for_zakat
+	cash_case = (
+		Case()
+		.when(zakat_calculation.total_cash_zakat_amount > 0, zakat_calculation.total_cash_amount)
+		.else_(0)
 	)
+
+	gold_case = (
+		Case()
+		.when(zakat_calculation.total_gold_zakat_amount > 0, zakat_calculation.total_gold_amount)
+		.else_(0)
+	)
+
+	silver_case = (
+		Case()
+		.when(zakat_calculation.total_silver_zakat_amount > 0, zakat_calculation.total_silver_amount)
+		.else_(0)
+	)
+
+	business_assets_case = (
+		Case()
+		.when(zakat_calculation.business_assets_zakat_amount > 0, zakat_calculation.amount_eligible_for_zakat)
+		.else_(0)
+	)
+
+	total_amount_eligible_for_zakat = cash_case + gold_case + silver_case + business_assets_case
+
 	zakat_amount = (
 		zakat_calculation.total_cash_zakat_amount
 		+ zakat_calculation.total_gold_zakat_amount
@@ -37,6 +58,10 @@ def get_data(filters: dict) -> list:
             zakat_calculation.start_fiscal_year.as_("fiscal_year"),
             zakat_calculation.current_24k_gold_price_for_1_gm.as_("gold_price"),
             zakat_calculation.nisab_threshold.as_("nisab_threshold"),
+            cash_case,
+            gold_case,
+            silver_case,
+            business_assets_case,
 			total_amount_eligible_for_zakat.as_("total_amount_eligible_for_zakat"),
 			zakat_amount.as_("total_zakat_amount"))
 		.inner_join(company).on(zakat_calculation.company == company.name)
