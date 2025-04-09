@@ -122,11 +122,7 @@ class ZAKATCalculation(Document):
 	def set_cash_and_bank_zakat_amounts(self):
 		self.total_cash_zakat_amount = 0
 
-		if not self.total_cash_amount:
-			self.total_cash_amount = 0
-			return
-
-		if self.total_cash_amount >= self.nisab_threshold:
+		if self.total_cash_amount and self.total_cash_amount >= self.nisab_threshold:
 			self.total_cash_zakat_amount = self.total_cash_amount * 0.025
 
 	def set_total_gold_zakat_amount(self):
