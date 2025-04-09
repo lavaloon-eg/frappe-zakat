@@ -7,11 +7,18 @@ import frappe
 from frappe.model.document import Document
 from datetime import datetime
 
+
 @dataclass
 class ZakatType:
 	name: str
-	eligible_amount: float
-	zakat_amount: float
+	eligible_amount: float = 0.0
+	zakat_amount: float = 0.0
+
+	def __post_init__(self):
+		if self.eligible_amount is None:
+			self.eligible_amount = 0.0
+		if self.zakat_amount is None:
+			self.zakat_amount = 0.0
 
 	def to_html_row(self) -> str:
 		"""Generate an HTML table row for this ZakatType."""
@@ -71,8 +78,8 @@ class ZAKATCalculation(Document):
 				</tr>
 		"""
 		for zakat_type in zakat_types:
-			total_amount_eligible_for_zakat += zakat_type.eligible_amount or 0
-			total_zakat_amount += zakat_type.zakat_amount or 0
+			total_amount_eligible_for_zakat += zakat_type.eligible_amount
+			total_zakat_amount += zakat_type.zakat_amount
 			table += zakat_type.to_html_row()
 
 		table += f"""
@@ -113,28 +120,28 @@ class ZAKATCalculation(Document):
 			frappe.throw("Current Gold Price is not set in Settings.")
 
 	def set_cash_and_bank_zakat_amounts(self):
-		if not isinstance(self.total_cash_amount, (int, float)):
+		self.total_cash_zakat_amount = 0
+
+		if not self.total_cash_amount:
 			self.total_cash_amount = 0
-			self.total_cash_zakat_amount = 0
 			return
 
 		if self.total_cash_amount >= self.nisab_threshold:
 			self.total_cash_zakat_amount = self.total_cash_amount * 0.025
-		else:
-			self.total_cash_zakat_amount = 0 
 
 	def set_total_gold_zakat_amount(self):
 		total_gold_amount = 0
 		total_gold_zakat_amount = 0
+
 		for gold in self.gold_holdings:
 			if gold.grams:
-				gold.equivalent_value_to_24k = gold.grams * (
-					int(gold.gold_karat) / 24)
+				gold.equivalent_value_to_24k = gold.grams * (int(gold.gold_karat) / 24)
 				gold.gold_amount = gold.equivalent_value_to_24k * self.current_24k_gold_price_for_1_gm
+
 				if gold.gold_amount >= self.nisab_threshold:
-					total_gold_amount += gold.gold_amount or 0
+					total_gold_amount += gold.gold_amount
 					gold.zakat_amount = gold.gold_amount * 0.025
-					total_gold_zakat_amount += gold.zakat_amount or 0
+					total_gold_zakat_amount += gold.zakat_amount
 				else:
 					gold.zakat_amount = 0
 
