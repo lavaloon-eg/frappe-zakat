@@ -25,6 +25,7 @@
   "golds_section",
   "gold_holdings",
   "total_gold_amount",
+  "total_gold_amount_eligible_for_zakat",
   "total_gold_zakat_amount",
   "silver_section",
   "total_silver_grams",
@@ -249,6 +250,13 @@
    "label": "Cash and Bank Balances"
   },
   {
+   "fieldname": "total_gold_amount_eligible_for_zakat",
+   "fieldtype": "Currency",
+   "label": "Total Gold Amount Eligible for Zakat",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
    "fieldname": "total_gold_amount",
    "fieldtype": "Currency",
    "label": "Total Gold Amount",
@@ -258,7 +266,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-27 12:38:37.855122",
+ "modified": "2025-04-09 17:59:52.269386",
  "modified_by": "Administrator",
  "module": "Frappe Zakat",
  "name": "ZAKAT Calculation",
