@@ -21,7 +21,7 @@ To setup the repository locally follow the steps mentioned below:
 2. Install the app:
 
    ```bash
-   bench get-app git@github.com:lavaloon-eg/frappe-zakat.git --branch master
+   bench get-app --branch master https://github.com/lavaloon-eg/frappe-zakat.git
    ```
 
 3. Install to your site:
