@@ -1,0 +1,291 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-01-26 12:29:20.320522",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "main_terms_and_total_tab",
+  "details_section",
+  "company",
+  "start_fiscal_year",
+  "current_24k_gold_price_for_1_gm",
+  "column_break_zynu",
+  "nisab_threshold",
+  "end_fiscal_year",
+  "current_silver_price_for_1_gm",
+  "total_zakat_amount_section",
+  "total_zakat_amount_for_each_entered_type",
+  "cash_and_bank_balances_tab",
+  "cash_and_bank_balances_details_section",
+  "total_cash_amount",
+  "column_break_zadi",
+  "total_cash_zakat_amount",
+  "gold_and_silver_holdings_tab",
+  "golds_section",
+  "gold_holdings",
+  "total_gold_amount",
+  "total_gold_amount_eligible_for_zakat",
+  "total_gold_zakat_amount",
+  "silver_section",
+  "total_silver_grams",
+  "total_silver_zakat_amount",
+  "column_break_pebn",
+  "total_silver_amount",
+  "business_assets_tab",
+  "business_assets_details_section",
+  "inventory_value",
+  "liabilities",
+  "business_assets_zakat_amount",
+  "column_break_cnml",
+  "receivables",
+  "amount_eligible_for_zakat"
+ ],
+ "fields": [
+  {
+   "fieldname": "main_terms_and_total_tab",
+   "fieldtype": "Tab Break",
+   "label": "Main Terms & Total"
+  },
+  {
+   "fieldname": "start_fiscal_year",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Start Fiscal Year ",
+   "reqd": 1
+  },
+  {
+   "fieldname": "current_24k_gold_price_for_1_gm",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Current 24K Gold Price for 1 gm",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "current_silver_price_for_1_gm",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Current Silver Price for 1 gm",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "nisab_threshold",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Nisab Threshold",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_cash_amount",
+   "fieldtype": "Currency",
+   "label": "Total Cash Amount",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "gold_and_silver_holdings_tab",
+   "fieldtype": "Tab Break",
+   "label": "Gold and Silver Holdings"
+  },
+  {
+   "fieldname": "golds_section",
+   "fieldtype": "Section Break",
+   "label": "Gold"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_zynu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "total_zakat_amount_section",
+   "fieldtype": "Section Break",
+   "label": "Total ZAKAT Amount"
+  },
+  {
+   "fieldname": "total_zakat_amount_for_each_entered_type",
+   "fieldtype": "Text Editor",
+   "label": "Total Zakat Amount for Each Entered Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_zadi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_gold_zakat_amount",
+   "fieldtype": "Currency",
+   "label": "Total Gold Zakat Amount",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "silver_section",
+   "fieldtype": "Section Break",
+   "label": "Silver"
+  },
+  {
+   "fieldname": "total_silver_grams",
+   "fieldtype": "Float",
+   "label": "Total Silver Grams",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "total_silver_zakat_amount",
+   "fieldtype": "Currency",
+   "label": "Total Silver Zakat Amount",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_pebn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_silver_amount",
+   "fieldtype": "Currency",
+   "label": "Total Silver Amount",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "business_assets_tab",
+   "fieldtype": "Tab Break",
+   "label": "Business Assets"
+  },
+  {
+   "fieldname": "inventory_value",
+   "fieldtype": "Currency",
+   "label": "Inventory Value",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "liabilities",
+   "fieldtype": "Currency",
+   "label": "Liabilities",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "business_assets_zakat_amount",
+   "fieldtype": "Currency",
+   "label": "Business Assets Zakat Amount ",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_cnml",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "receivables",
+   "fieldtype": "Currency",
+   "label": "Receivables",
+   "non_negative": 1
+  },
+  {
+   "description": "Inventory value + Receivables \u2013 Liabilities",
+   "fieldname": "amount_eligible_for_zakat",
+   "fieldtype": "Currency",
+   "label": "Amount Eligible for Zakat",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "cash_and_bank_balances_details_section",
+   "fieldtype": "Section Break",
+   "label": "Cash and Bank Balances Details"
+  },
+  {
+   "fieldname": "business_assets_details_section",
+   "fieldtype": "Section Break",
+   "label": "Business Assets Details"
+  },
+  {
+   "fieldname": "end_fiscal_year",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "End Fiscal Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gold_holdings",
+   "fieldtype": "Table",
+   "label": "Gold Holdings",
+   "options": "Zakat Gold Item"
+  },
+  {
+   "fieldname": "total_cash_zakat_amount",
+   "fieldtype": "Currency",
+   "label": "Total Cash Zakat Amount",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "cash_and_bank_balances_tab",
+   "fieldtype": "Tab Break",
+   "label": "Cash and Bank Balances"
+  },
+  {
+   "fieldname": "total_gold_amount_eligible_for_zakat",
+   "fieldtype": "Currency",
+   "label": "Total Gold Amount Eligible for Zakat",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_gold_amount",
+   "fieldtype": "Currency",
+   "label": "Total Gold Amount",
+   "non_negative": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-04-09 17:59:52.269386",
+ "modified_by": "Administrator",
+ "module": "Frappe Zakat",
+ "name": "ZAKAT Calculation",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
