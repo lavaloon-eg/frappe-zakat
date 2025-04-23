@@ -8,5 +8,7 @@ to a section with the version name.
 
 ## Unreleased Changes
 
+## 0.0.2
+
 * Add `Zakat Calculation` doctype.
 * Add `Annual Zakat` report.
