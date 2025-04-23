@@ -26,7 +26,7 @@ def get_data(filters: dict) -> list:
 
 	gold_case = (
 		Case()
-		.when(zakat_calculation.total_gold_zakat_amount > 0, zakat_calculation.total_gold_amount)
+		.when(zakat_calculation.total_gold_zakat_amount > 0, zakat_calculation.total_gold_amount_eligible_for_zakat)
 		.else_(0)
 	)
 

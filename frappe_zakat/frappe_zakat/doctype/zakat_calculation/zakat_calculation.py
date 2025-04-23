@@ -57,6 +57,7 @@ class ZAKATCalculation(Document):
 		total_cash_amount: DF.Currency
 		total_cash_zakat_amount: DF.Currency
 		total_gold_amount: DF.Currency
+		total_gold_amount_eligible_for_zakat: DF.Currency
 		total_gold_zakat_amount: DF.Currency
 		total_silver_amount: DF.Currency
 		total_silver_grams: DF.Float
@@ -127,21 +128,24 @@ class ZAKATCalculation(Document):
 
 	def set_total_gold_zakat_amount(self):
 		total_gold_amount = 0
+		total_gold_amount_eligible_for_zakat = 0
 		total_gold_zakat_amount = 0
 
 		for gold in self.gold_holdings:
 			if gold.grams:
 				gold.equivalent_value_to_24k = gold.grams * (int(gold.gold_karat) / 24)
 				gold.gold_amount = gold.equivalent_value_to_24k * self.current_24k_gold_price_for_1_gm
+				total_gold_amount += gold.gold_amount
 
 				if gold.gold_amount >= self.nisab_threshold:
-					total_gold_amount += gold.gold_amount
+					total_gold_amount_eligible_for_zakat += gold.gold_amount
 					gold.zakat_amount = gold.gold_amount * 0.025
 					total_gold_zakat_amount += gold.zakat_amount
 				else:
 					gold.zakat_amount = 0
 
 		self.total_gold_amount = total_gold_amount
+		self.total_gold_amount_eligible_for_zakat = total_gold_amount_eligible_for_zakat
 		self.total_gold_zakat_amount = total_gold_zakat_amount
 
 	def set_total_silver_zakat_amount(self):
@@ -174,7 +178,7 @@ class ZAKATCalculation(Document):
 	def generate_total_zakat_amount_table(self):
 		zakat_types = [
 			ZakatType("Cash", self.total_cash_amount, self.total_cash_zakat_amount),
-			ZakatType("Gold", self.total_gold_amount, self.total_gold_zakat_amount),
+			ZakatType("Gold", self.total_gold_amount_eligible_for_zakat, self.total_gold_zakat_amount),
 			ZakatType("Silver", self.total_silver_amount, self.total_silver_zakat_amount),
 			ZakatType("Business Assets", self.amount_eligible_for_zakat, self.business_assets_zakat_amount),
 		]
