@@ -8,6 +8,8 @@ to a section with the version name.
 
 ## Unreleased Changes
 
+* Add `Zakat` workspace.
+
 ## 0.0.2
 
 * Add `Zakat Calculation` doctype.
