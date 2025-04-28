@@ -9,6 +9,7 @@ to a section with the version name.
 ## Unreleased Changes
 
 * Add `Zakat` workspace.
+* Add dashboard summary in `Annual Zakat` report.
 
 ## 0.0.2
 

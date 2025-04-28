@@ -3,6 +3,7 @@
 
 import frappe
 from frappe.query_builder import DocType
+from frappe.utils import fmt_money
 from frappe import _
 from pypika.terms import Case
 
@@ -12,7 +13,8 @@ def execute(filters: dict = None) -> tuple:
 
 	data = get_data(filters)
 	columns = get_columns()
-	return columns, data
+	summary = get_summary(data)
+	return columns, data, None, None, summary
 
 
 def get_data(filters: dict) -> list:
@@ -117,3 +119,48 @@ def get_columns():
 	]
 
 	return columns
+
+def get_summary(data):
+    if not data:
+        return [
+            {
+				"label": _("Total Zakat Amount"),
+                "value": fmt_money(0.0)
+			},
+            {
+				"label": _("Total Amount Eligible for Zakat"),
+                "value": fmt_money(0.0)
+			},
+            {
+				"label": _("Average Gold Price"),
+                "value": fmt_money(0.0)
+			},
+            {
+				"label": _("Average Nisab Threshold"),
+                "value": fmt_money(0.0)
+			},
+        ]
+
+    total_zakat_amount = sum(d.get("total_zakat_amount", 0) for d in data)
+    total_amount_eligible_for_zakat = sum(d.get("total_amount_eligible_for_zakat", 0) for d in data)
+    avg_gold_price = sum(d.get("gold_price", 0) for d in data) / len(data)
+    avg_nisab = sum(d.get("nisab_threshold", 0) for d in data) / len(data)
+
+    return [
+        {
+			"label": _("Total Zakat Amount"),
+            "value": fmt_money(total_zakat_amount)
+		},
+        {
+			"label": _("Total Amount Eligible for Zakat"),
+            "value": fmt_money(total_amount_eligible_for_zakat)
+		},
+        {
+			"label": _("Average Gold Price"),
+            "value": fmt_money(avg_gold_price)
+		},
+        {
+			"label": _("Average Nisab Threshold"),
+            "value": fmt_money(avg_nisab)
+		},
+    ]
