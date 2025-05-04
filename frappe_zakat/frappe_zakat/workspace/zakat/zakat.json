@@ -1,0 +1,45 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"l9AJv1BNcO\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Operation</b></span>\",\"col\":12}},{\"id\":\"6OokVTGflG\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Zakat Calculation\",\"col\":4}},{\"id\":\"4vAmrdavYv\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Report</b></span>\",\"col\":12}},{\"id\":\"O88Px76baV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Annual Zakat\",\"col\":4}}]",
+ "creation": "2025-04-24 11:05:38.462235",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "income",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Zakat",
+ "links": [],
+ "modified": "2025-04-24 11:25:15.451778",
+ "modified_by": "Administrator",
+ "module": "Frappe Zakat",
+ "name": "Zakat",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 1.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Annual Zakat",
+   "link_to": "Annual Zakat",
+   "type": "Report"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Zakat Calculation",
+   "link_to": "ZAKAT Calculation",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Zakat"
+}
